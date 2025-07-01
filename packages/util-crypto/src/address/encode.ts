@@ -4,7 +4,7 @@
 import type { Prefix } from './types.js';
 
 // Original implementation: https://github.com/paritytech/polka-ui/blob/4858c094684769080f5811f32b081dd7780b0880/src/polkadot.js#L34
-import { u8aConcat } from '@polkadot/util';
+import { u8aConcat, u8aToHex } from '@polkadot/util';
 
 import { base58Encode } from '../base58/index.js';
 import { decodeAddress } from './decode.js';
@@ -14,6 +14,10 @@ import { sshash } from './sshash.js';
 export function encodeAddress (key: string | Uint8Array, ss58Format: Prefix = defaults.prefix): string {
   // decode it, this means we can re-encode an address
   const u8a = decodeAddress(key);
+
+  if (u8a.length == 20) {
+    return u8aToHex(u8a);
+  }
 
   if ((ss58Format < 0) || (ss58Format > 16383) || [46, 47].includes(ss58Format)) {
     throw new Error('Out of range ss58Format specified');

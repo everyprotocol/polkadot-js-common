@@ -45,7 +45,6 @@ export function createDecode ({ coder, ipfs }: Config, validate: ValidateFn): De
 export function createEncode ({ coder, ipfs }: Config): EncodeFn {
   return (value: U8aLike, ipfsCompat?: boolean): string => {
     const out = coder.encode(u8aToU8a(value));
-
     return ipfs && ipfsCompat
       ? `${ipfs}${out}`
       : out;
